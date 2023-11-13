@@ -19,7 +19,7 @@
   border-radius: 12px 12px 0 0;
   padding: 6px;
   flex-direction: row;
-  background-color: gray;
+  background-color: #0798f2;
   height: 10%;
 }
 
@@ -64,8 +64,8 @@
 
 .plebai-chat-submit {
   border: none;
-  background-color: none;
-  color: gray;
+  background-color: #0798f2;
+  color: white;
   border-radius: 0 0 12px 0;
 }
 
