@@ -1,6 +1,11 @@
 import styles from "./plebai.module.css";
 import { Conversation } from "plebai-sdk";
 
+declare var plebAiConf: {
+  agentKey: string;
+  chatTitle: string;
+};
+
 export function createMessageDiv(
   message: string,
   sender: "user" | "agent",
@@ -17,12 +22,6 @@ export function createMessageDiv(
 }
 
 function setUp() {
-  const plebAiConf = {
-    chatTitle: "Alby GPT",
-    agentKey:
-      "e301925b25ea966e27711d1fc7de65183752dfc2f5830505964d485228f8182d",
-  };
-
   const chatContainer = document.createElement("div");
   chatContainer.className = styles["plebai-chat-container"];
 
