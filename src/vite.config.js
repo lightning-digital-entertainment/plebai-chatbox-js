@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        dir: "./lib",
+        dir: "dist",
         entryFileNames: "plebai.js",
         assetFileNames: "styles.css",
         chunkFileNames: "chunk.js",
