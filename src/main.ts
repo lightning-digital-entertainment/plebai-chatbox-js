@@ -74,9 +74,15 @@ function setUp() {
   };
   textContainer.appendChild(submitButton);
 
+  const poweredBy = document.createElement("p");
+  poweredBy.className = styles["plebai-chat-poweredby"];
+  poweredBy.innerHTML =
+    'Powered by <a href="https://plebai.com" target="_blank">plebai.com</a>';
+
   chatContainer.appendChild(topBar);
   chatContainer.appendChild(chatInner);
   chatContainer.appendChild(textContainer);
+  chatContainer.appendChild(poweredBy);
 
   document.body.appendChild(chatContainer);
 
