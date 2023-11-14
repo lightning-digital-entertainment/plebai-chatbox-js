@@ -69,6 +69,7 @@
 
 .plebai-chat-submit {
   font-family: Montserrat, sans-serif;
+  min-width: 50px;
   border: none;
   background-color: #ffde6e;
   color: black;
@@ -130,4 +131,13 @@
   color: black;
   background-color: lightgray;
   border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .plebai-chat-container {
+    inset: 0px;
+    height: unset;
+    width: unset;
+    margin: 16px;
+  }
 }
