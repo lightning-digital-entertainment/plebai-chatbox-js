@@ -10,6 +10,7 @@
   height: 480px;
   width: 320px;
   visibility: hidden;
+  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.5);
 }
 
 .plebai-chat-topbar {
@@ -19,7 +20,8 @@
   border-radius: 12px 12px 0 0;
   padding: 6px;
   flex-direction: row;
-  background-color: #0798f2;
+  background-color: #ffde6e;
+  color: black;
   height: 10%;
 }
 
@@ -31,6 +33,7 @@
   height: 70%;
   overflow-y: scroll;
   color: black;
+  font-size: smaller;
 }
 
 .plebai-chat-textcontainer {
@@ -64,19 +67,24 @@
 
 .plebai-chat-submit {
   border: none;
-  background-color: #0798f2;
-  color: white;
+  background-color: #ffde6e;
+  color: black;
   border-radius: 0 0 12px 0;
 }
 
 .plebai-chat-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
+  background-color: white;
   bottom: 50px;
   right: 50px;
-  height: 50px;
-  width: 50px;
-  border-radius: 25px;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
   border: none;
+  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.5);
 }
 
 .agentPic {
@@ -87,17 +95,17 @@
 }
 
 .plebai-chat-agentmessage {
-  width: 80%;
+  max-width: 80%;
   display: flex;
   flex-direction: row;
   color: black;
   padding: 5px;
-  background-color: grey;
+  background-color: #fff4b0;
   border-radius: 12px;
 }
 
 .plebai-chat-usermessage {
-  width: 80%;
+  max-width: 80%;
   align-self: flex-end;
   display: flex;
   flex-direction: row;
