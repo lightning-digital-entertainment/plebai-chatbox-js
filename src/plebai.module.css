@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 .plebai-chat-container {
+  --primary-color: #0798f2;
   font-family: Montserrat, sans-serif;
   position: fixed;
   display: flex;
@@ -23,7 +24,7 @@
   border-radius: 12px 12px 0 0;
   padding: 6px;
   flex-direction: row;
-  background-color: #ffde6e;
+  background-color: var(--primary-color);
   color: black;
   height: 10%;
 }
@@ -71,7 +72,7 @@
   font-family: Montserrat, sans-serif;
   min-width: 50px;
   border: none;
-  background-color: #ffde6e;
+  background-color: var(--primary-color);
   color: black;
 }
 
@@ -117,8 +118,9 @@
   flex-direction: row;
   color: black;
   padding: 5px;
-  background-color: #fff4b0;
+  background-color: #97d0f5;
   border-radius: 12px;
+  animation: 0.1s linear fadeIn;
 }
 
 .plebai-chat-usermessage {
@@ -131,6 +133,16 @@
   color: black;
   background-color: lightgray;
   border-radius: 12px;
+  animation: 0.1s linear fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
