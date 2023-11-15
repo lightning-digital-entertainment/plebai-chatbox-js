@@ -33,11 +33,10 @@ Integrating the chatbox in your website is really easy. Simply add the lines bel
 ```html
 <script>
   var plebAiConf = {
-    agentKey:
-      "<agent key in hex>",
+    agentKey: "<agent key in hex>",
     chatTitle: "<your title>",
-    primaryColor: "<colorcode in hex"
-    secondaryColor: "<colorcode in hex"
+    primaryColor: "<colorcode in hex",
+    secondaryColor: "<colorcode in hex",
   };
 </script>
 <script src="https://main--glittery-druid-ea3006.netlify.app/plebai.js"></script>
