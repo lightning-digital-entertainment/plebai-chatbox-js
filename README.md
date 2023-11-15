@@ -20,6 +20,8 @@
 
 ## About The Project
 
+![Product Name Screen Shot](https://image.nostr.build/ea22822d763913380d84b5a9be58e79fd74eed45bdd13ce16d5acc9dd873d76a.png)
+
 With PlebAI Chatbox it is incredibly simple to include a chat with one of the many [PlebAI agents](https://chat.plebai.com) into any web page.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
