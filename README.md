@@ -33,11 +33,10 @@ Integrating the chatbox in your website is really easy. Simply add the lines bel
 ```html
 <script>
   var plebAiConf = {
-    agentKey:
-      "<agent key in hex>",
+    agentKey: "<agent key in hex>",
     chatTitle: "<your title>",
-    primaryColor: "<colorcode in hex"
-    secondaryColor: "<colorcode in hex"
+    primaryColor: "<colorcode in hex",
+    secondaryColor: "<colorcode in hex",
   };
 </script>
 <script src="https://main--glittery-druid-ea3006.netlify.app/plebai.js"></script>
@@ -51,7 +50,7 @@ Integrating the chatbox in your website is really easy. Simply add the lines bel
 
 The first `<script>` tag in the snippet above is used to pass a configuration object to chatbox. It holds the following four properties:
 
-1. agentKey: The public key of the agent that chatbox will connect to.
+1. agentKey: The public key of the agent that chatbox will connect to (can be found on [plebai.com/agents](https://plebai.com/agents)).
 2. chatTitle: The title that will be displayed at the top of chatbox.
 3. primaryColor: The primary color of the chatbox component (topbar and submit button background).
 4. secondaryColor: The secondary color of the chatbox component (response background)
