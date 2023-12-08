@@ -13,6 +13,6 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "plebai-sdk": "^0.1.0"
+    "plebai-sdk": "github:lightning-digital-entertainment/plebai-ts#processing-handler"
   }
 }

@@ -115,12 +115,27 @@
 .plebai-chat-agentmessage {
   max-width: 80%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   color: black;
   padding: 5px;
   background-color: #97d0f5;
   border-radius: 12px;
   animation: 0.1s linear fadeIn;
+}
+
+.plebai-chat-report {
+  border: none;
+  background: none;
+  color: black;
+  display: flex;
+  align-self: end;
+  font-family: "Montserrat";
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+
+.plebai-chat-report:hover {
+  opacity: 1;
 }
 
 .plebai-chat-usermessage {
@@ -134,6 +149,27 @@
   background-color: lightgray;
   border-radius: 12px;
   animation: 0.1s linear fadeIn;
+}
+
+.plebai-chat-typing {
+  visibility: hidden;
+  margin: 0;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+  text-align: center;
+  animation: 2s linear pulse infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
