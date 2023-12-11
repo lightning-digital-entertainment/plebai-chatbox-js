@@ -11,8 +11,8 @@
   right: 50px;
   background-color: white;
   border-radius: 12px;
-  height: 480px;
-  width: 320px;
+  height: 66vh;
+  width: 350px;
   visibility: hidden;
   box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.5);
 }
@@ -50,6 +50,13 @@
 .plebai-chat-close {
   background: none;
   border: none;
+}
+
+.plebai-chat-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10;
 }
 
 .plebai-chat-input {
