@@ -7,7 +7,9 @@ declare var plebAiConf: {
   chatTitle: string;
   primaryColor: string;
   secondaryColor: string;
-  contact: string;
+  contactMail: string;
+  contactMessage: string;
+  suggestions: string[];
 };
 
 function createTimer() {
@@ -43,6 +45,13 @@ function setUp() {
     },
   );
 
+  function triggerTyping() {
+    typingMessage.style.visibility = "visible";
+    timer.setTimer(() => {
+      typingMessage.style.visibility = "hidden";
+    }, 120000);
+  }
+
   async function submitRequest() {
     const prompt = input.value;
     if (prompt.length < 1) {
@@ -71,12 +80,14 @@ function setUp() {
   const buttonContainer = document.createElement("div");
   buttonContainer.className = styles["plebai-chat-button-container"];
 
-  const helpButton = createHelpButton(escalateIssue);
   const closeButton = createCloseButton(() => {
     chatContainer.style.visibility = "hidden";
     chatButton.style.visibility = "visible";
   });
-  buttonContainer.appendChild(helpButton);
+  if (plebAiConf.contactMessage) {
+    const helpButton = createHelpButton(escalateIssue);
+    buttonContainer.appendChild(helpButton);
+  }
   buttonContainer.appendChild(closeButton);
   topBar.appendChild(buttonContainer);
 
@@ -86,6 +97,19 @@ function setUp() {
   const typingMessage = document.createElement("p");
   typingMessage.textContent = "Agent is processing your request...";
   typingMessage.className = styles["plebai-chat-typing"];
+
+  const suggestionContainer = document.createElement("div");
+  suggestionContainer.className = styles["plebai-chat-suggestion-container"];
+  plebAiConf.suggestions.forEach((prompt) => {
+    const suggestion = document.createElement("button");
+    suggestion.className = styles["plebai-chat-suggestion"];
+    suggestion.innerText = prompt;
+    suggestion.onclick = () => {
+      conv.sendPrompt(prompt);
+      triggerTyping();
+    };
+    suggestionContainer.appendChild(suggestion);
+  });
 
   const textContainer = document.createElement("div");
   textContainer.className = styles["plebai-chat-textcontainer"];
@@ -115,6 +139,7 @@ function setUp() {
   chatContainer.appendChild(topBar);
   chatContainer.appendChild(chatInner);
   chatContainer.appendChild(typingMessage);
+  chatContainer.appendChild(suggestionContainer);
   chatContainer.appendChild(textContainer);
   chatContainer.appendChild(poweredBy);
 
@@ -140,11 +165,10 @@ function setUp() {
     const container = document.createElement("div");
     container.className = styles["plebai-chat-agentmessage"];
     const p = document.createElement("p");
-    p.innerText =
-      "Sorry to hear that you are encountering issues. Feel free to contact support at:";
+    p.innerText = plebAiConf.contactMessage;
     const a = document.createElement("a");
-    a.innerText = plebAiConf.contact;
-    a.href = `mailto:${plebAiConf.contact}`;
+    a.innerText = plebAiConf.contactMail;
+    a.href = `mailto:${plebAiConf.contactMail}`;
     a.style.color = "black";
     if (plebAiConf.secondaryColor) {
       container.style.backgroundColor = plebAiConf.secondaryColor;
@@ -170,13 +194,6 @@ function setUp() {
       container.style.backgroundColor = plebAiConf.secondaryColor;
     }
     container.appendChild(paragraph);
-    if (sender === "agent") {
-      const reportButton = document.createElement("button");
-      reportButton.className = styles["plebai-chat-report"];
-      reportButton.innerText = "Report a problem";
-      reportButton.onclick = escalateIssue;
-      container.appendChild(reportButton);
-    }
     return container;
   }
 

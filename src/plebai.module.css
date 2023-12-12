@@ -167,6 +167,25 @@
   animation: 2s linear pulse infinite;
 }
 
+.plebai-chat-suggestion-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow: scroll;
+  padding: 1rem;
+}
+
+.plebai-chat-suggestion {
+  background-color: lightgrey;
+  border: none;
+  font-family: "Montserrat";
+  vertical-align: baseline;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+}
+
 @keyframes pulse {
   0% {
     opacity: 1;
