@@ -51,6 +51,7 @@
   height: 15%;
   width: 100%;
   background-color: lightgray;
+  border-top: solid 1px lightgray;
 }
 
 .plebai-chat-close {
