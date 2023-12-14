@@ -39,10 +39,10 @@ Integrating the chatbox in your website is really easy. Simply add the lines bel
     secondaryColor: "<colorcode in hex",
   };
 </script>
-<script src="https://main--glittery-druid-ea3006.netlify.app/plebai.js"></script>
+<script src="https://i.current.fyi/static/plebai.js"></script>
 <link
   rel="stylesheet"
-  href="https://main--glittery-druid-ea3006.netlify.app/styles.css"
+  href="https://i.current.fyi/static/styles.css"
 />
 ```
 
