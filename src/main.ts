@@ -135,7 +135,7 @@ function setUp() {
   const poweredBy = document.createElement("p");
   poweredBy.className = styles["plebai-chat-poweredby"];
   poweredBy.innerHTML =
-    'Powered by <a href="https://plebai.com" target="_blank">plebai.com</a>';
+    'Powered by <a href="https://chat.plebai.com" target="_blank">PlebAI</a>';
 
   chatContainer.appendChild(topBar);
   chatContainer.appendChild(chatInner);
