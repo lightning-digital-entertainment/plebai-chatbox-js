@@ -1,3 +1,4 @@
+import { createCloseButton, createHelpButton } from "./elements";
 import styles from "./plebai.module.css";
 import { Conversation } from "plebai-sdk";
 
@@ -6,28 +7,69 @@ declare var plebAiConf: {
   chatTitle: string;
   primaryColor: string;
   secondaryColor: string;
+  contactMail: string;
+  contactMessage: string;
+  suggestions: string[];
   buttonColor:string;
 };
 
-export function createMessageDiv(
-  message: string,
-  sender: "user" | "agent",
-): HTMLDivElement {
-  const container = document.createElement("div");
-  container.className =
-    sender === "user"
-      ? styles["plebai-chat-usermessage"]
-      : styles["plebai-chat-agentmessage"];
-  const paragraph = document.createElement("p");
-  paragraph.innerText = message;
-  if (plebAiConf.secondaryColor && sender === "agent") {
-    container.style.backgroundColor = plebAiConf.secondaryColor;
-  }
-  container.appendChild(paragraph);
-  return container;
+function createTimer() {
+  let timerId: number;
+
+  return {
+    setTimer: function (cb: () => void, delay: number) {
+      timerId = setTimeout(cb, delay);
+      console.log("Sent timer ", timerId);
+    },
+    clearTimer: function () {
+      console.log("Cleared timer", timerId);
+      clearTimeout(timerId);
+    },
+  };
 }
 
 function setUp() {
+  const timer = createTimer();
+  const conv = new Conversation(
+    plebAiConf.agentKey,
+    [
+      "wss://relay.current.fyi",
+      "wss://nostr-pub.wellorder.net",
+      "wss://nostr.mom",
+      "wss://nostr21.com",
+      "wss://nos.lol",
+    ],
+    {
+      secretKeyMethod: "throwaway",
+      useWebLn: false,
+      providerHost: "https://plebai.com",
+    },
+  );
+
+  function triggerTyping() {
+    typingMessage.style.visibility = "visible";
+    timer.setTimer(() => {
+      typingMessage.style.visibility = "hidden";
+    }, 120000);
+  }
+
+  async function submitRequest() {
+    const prompt = input.value;
+    if (prompt.length < 1) {
+      return;
+    }
+    try {
+      conv.sendPrompt(prompt);
+      input.value = "";
+      typingMessage.style.visibility = "visible";
+      timer.setTimer(() => {
+        typingMessage.style.visibility = "hidden";
+      }, 120000);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const chatContainer = document.createElement("div");
   chatContainer.className = styles["plebai-chat-container"];
   const topBar = document.createElement("div");
@@ -36,18 +78,39 @@ function setUp() {
   topBarTitle.innerText = plebAiConf.chatTitle;
   topBar.appendChild(topBarTitle);
 
-  const closeButton = document.createElement("button");
-  closeButton.className = styles["plebai-chat-close"];
-  closeButton.innerHTML =
-    '<svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>';
-  closeButton.onclick = () => {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = styles["plebai-chat-button-container"];
+
+  const closeButton = createCloseButton(() => {
     chatContainer.style.visibility = "hidden";
     chatButton.style.visibility = "visible";
-  };
-  topBar.appendChild(closeButton);
+  });
+  if (plebAiConf.contactMessage) {
+    const helpButton = createHelpButton(escalateIssue);
+    buttonContainer.appendChild(helpButton);
+  }
+  buttonContainer.appendChild(closeButton);
+  topBar.appendChild(buttonContainer);
 
   const chatInner = document.createElement("div");
   chatInner.className = styles["plebai-chat-inner"];
+
+  const typingMessage = document.createElement("p");
+  typingMessage.textContent = "Agent is processing your request...";
+  typingMessage.className = styles["plebai-chat-typing"];
+
+  const suggestionContainer = document.createElement("div");
+  suggestionContainer.className = styles["plebai-chat-suggestion-container"];
+  plebAiConf.suggestions.forEach((prompt) => {
+    const suggestion = document.createElement("button");
+    suggestion.className = styles["plebai-chat-suggestion"];
+    suggestion.innerText = prompt;
+    suggestion.onclick = () => {
+      conv.sendPrompt(prompt);
+      triggerTyping();
+    };
+    suggestionContainer.appendChild(suggestion);
+  });
 
   const textContainer = document.createElement("div");
   textContainer.className = styles["plebai-chat-textcontainer"];
@@ -57,11 +120,7 @@ function setUp() {
   input.onkeydown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      if (input.value.length < 1) {
-        return;
-      }
-      conv.sendPrompt(input.value);
-      input.value = "";
+      submitRequest();
     }
   };
   textContainer.appendChild(input);
@@ -70,14 +129,7 @@ function setUp() {
   submitButton.className = styles["plebai-chat-submit"];
   submitButton.innerHTML =
     '<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>';
-  submitButton.onclick = () => {
-    const prompt = input.value;
-    if (prompt.length < 1) {
-      return;
-    }
-    conv.sendPrompt(prompt);
-    input.value = "";
-  };
+  submitButton.onclick = submitRequest;
   textContainer.appendChild(submitButton);
 
   const poweredBy = document.createElement("p");
@@ -87,6 +139,8 @@ function setUp() {
 
   chatContainer.appendChild(topBar);
   chatContainer.appendChild(chatInner);
+  chatContainer.appendChild(typingMessage);
+  chatContainer.appendChild(suggestionContainer);
   chatContainer.appendChild(textContainer);
   chatContainer.appendChild(poweredBy);
 
@@ -109,25 +163,47 @@ function setUp() {
 
   document.body.appendChild(chatButton);
 
-  const conv = new Conversation(
-    plebAiConf.agentKey,
-    [
-      "wss://relay.current.fyi",
-      "wss://nostr-pub.wellorder.net",
-      "wss://nostr.mom",
-      "wss://nostr21.com",
-      "wss://nos.lol",
-    ],
-    {
-      secretKeyMethod: "throwaway",
-      useWebLn: false,
-      providerHost: "https://plebai.com",
-    },
-  );
+  function escalateIssue() {
+    const container = document.createElement("div");
+    container.className = styles["plebai-chat-agentmessage"];
+    const p = document.createElement("p");
+    p.innerText = plebAiConf.contactMessage;
+    const a = document.createElement("a");
+    a.innerText = plebAiConf.contactMail;
+    a.href = `mailto:${plebAiConf.contactMail}`;
+    a.style.color = "black";
+    if (plebAiConf.secondaryColor) {
+      container.style.backgroundColor = plebAiConf.secondaryColor;
+    }
+    container.appendChild(p);
+    container.appendChild(a);
+    chatInner.appendChild(container);
+    chatInner.scrollTo(0, chatInner.scrollHeight);
+  }
 
-  conv.sub(
-    (e, m) => {
+  function createMessageDiv(
+    message: string,
+    sender: "user" | "agent",
+  ): HTMLDivElement {
+    const container = document.createElement("div");
+    container.className =
+      sender === "user"
+        ? styles["plebai-chat-usermessage"]
+        : styles["plebai-chat-agentmessage"];
+    const paragraph = document.createElement("p");
+    paragraph.innerText = message;
+    if (plebAiConf.secondaryColor && sender === "agent") {
+      container.style.backgroundColor = plebAiConf.secondaryColor;
+    }
+    container.appendChild(paragraph);
+    return container;
+  }
+
+  const listeners = {
+    onMessage: (e: any, m: string) => {
       if (e.pubkey === plebAiConf.agentKey) {
+        typingMessage.style.visibility = "hidden";
+        timer.clearTimer();
         const message = createMessageDiv(m, "agent");
         chatInner.appendChild(message);
       } else {
@@ -136,8 +212,12 @@ function setUp() {
       }
       chatInner.scrollTo(0, chatInner.scrollHeight);
     },
-    () => {},
-  );
+    onInvoice: (i: string) => {
+      console.log(i);
+    },
+  };
+
+  conv.sub(listeners);
 }
 if (document.readyState === "complete") {
   setUp();
