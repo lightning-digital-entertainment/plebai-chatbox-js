@@ -87,6 +87,7 @@
   margin: 0;
   text-align: center;
   background: none;
+  color: black;
   background-color: #f9fafb;
   border-radius: 0 0 12px 12px;
   font-size: smaller;
@@ -164,6 +165,7 @@
   margin-bottom: 6px;
   font-size: 0.8rem;
   text-align: center;
+  color: black;
   animation: 2s linear pulse infinite;
 }
 
@@ -172,6 +174,7 @@
   flex-direction: row;
   gap: 1rem;
   overflow: scroll;
+  color: black;
   padding: 1rem;
 }
 
